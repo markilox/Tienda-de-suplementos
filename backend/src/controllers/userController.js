@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const mongoose = require("mongoose");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -12,21 +12,21 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ message: "Error creando usuario", error: error.message });
-  }
-};
 
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    // Validación básica de ID (evita NoSQL injection)
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "ID no válido" });
+    }
+
+    // Buscar usuario y NO devolver contraseña
+    const user = await User.findById(req.params.id).select("-password");
     res.json(user);
+
   } catch (error) {
-    res.status(404).json({ message: "Usuario no encontrado" });
+    console.error("ERROR REAL getUserById:", error);
+    res.status(500).json({ message: "Error obteniendo usuario" });
   }
 };
 
