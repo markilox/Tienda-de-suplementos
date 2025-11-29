@@ -1,9 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-
-
 const connectDB = require("./config/db");
+const productRoutes = require("./routes/productRoutes");
 connectDB();
 
 const app = express();
@@ -12,12 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/products", productRoutes);
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Backend funciona' });
-});
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
