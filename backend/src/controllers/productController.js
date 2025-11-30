@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
 
+const xss = require("xss");
 
 exports.getAllProducts = async (req, res) => {
   try {
@@ -13,10 +14,22 @@ exports.getAllProducts = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const cleanData = {
+      name: xss(req.body.name),
+      description: xss(req.body.description),
+      category: xss(req.body.category),
+      price: req.body.price,
+      stock: req.body.stock,
+      image: xss(req.body.image)
+    };
+
+    const product = await Product.create(cleanData);
+
     res.status(201).json(product);
-  } catch (error) {
-    res.status(400).json({ message: "Error creando producto" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error creando producto" });
   }
 };
 
