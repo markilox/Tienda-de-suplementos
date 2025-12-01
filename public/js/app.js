@@ -14,20 +14,21 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 // Productos
 let products = [];
 
-// Función para cargar productos desde backend
+// Cargar productos desde backend
 async function fetchProducts() {
   try {
     const res = await fetch("/api/products");
     if (!res.ok) throw new Error("Error cargando productos");
     products = await res.json();
     renderProducts(products);
+    renderCart();
   } catch (error) {
     console.error(error);
     productsContainer.innerHTML = "<p>Error cargando productos</p>";
   }
 }
 
-// Render de productos
+// Render productos
 function renderProducts(list) {
   productsContainer.innerHTML = "";
   list.forEach(p => {
@@ -38,6 +39,7 @@ function renderProducts(list) {
       <h3>${p.name}</h3>
       <p class="description">${p.description}</p>
       <p class="price">€${p.price.toFixed(2)}</p>
+      <p class="stock">Stock: ${p.stock}</p>
       <button data-id="${p._id}">Añadir al carrito</button>
     `;
     productsContainer.appendChild(card);
@@ -50,7 +52,7 @@ function renderCart() {
   let total = 0;
   cart.forEach(item => {
     const prod = products.find(p => p._id === item.id);
-    if(!prod) return;
+    if (!prod) return;
     total += prod.price * item.quantity;
     const div = document.createElement("div");
     div.className = "cart-item";
@@ -67,7 +69,6 @@ function renderCart() {
 
 // Inicial
 fetchProducts();
-renderCart();
 
 // Añadir producto al carrito
 productsContainer.addEventListener("click", e => {
@@ -104,54 +105,6 @@ clearCartBtn.addEventListener("click", () => {
 document.getElementById("apply-filters").addEventListener("click", () => {
   const category = document.getElementById("category").value;
   const maxPrice = parseFloat(document.getElementById("price").value) || Infinity;
-  const filtered = products.filter(p => (category==="" || p.category===category) && p.price<=maxPrice);
+  const filtered = products.filter(p => (category === "" || p.category === category) && p.price <= maxPrice);
   renderProducts(filtered);
-});
-
-// Checkout con validación de stock
-checkoutBtn.addEventListener("click", async () => {
-  if(cart.length === 0){
-    alert("El carrito está vacío");
-    return;
-  }
-
-  const token = localStorage.getItem("token");
-  if(!token){
-    alert("Debes iniciar sesión para realizar la compra");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ cart })
-    });
-
-    const data = await res.json();
-
-    if(!res.ok){
-      if(data.insufficientStock){
-        let msg = "No hay suficiente stock para:\n";
-        data.insufficientStock.forEach(p => {
-          msg += `${p.name}: Disponible ${p.available}, Pediste ${p.requested}\n`;
-        });
-        alert(msg);
-      } else {
-        alert(data.message || "Error en el checkout");
-      }
-      return;
-    }
-
-    alert(data.message); // Compra realizada con éxito
-    cart = [];
-    renderCart();
-
-  } catch (error) {
-    console.error(error);
-    alert("Error al procesar la compra: " + error.message);
-  }
 });
