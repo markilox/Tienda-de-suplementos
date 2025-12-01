@@ -88,10 +88,12 @@ productsContainer.addEventListener("click", e => {
   }
 });
 
-// Abrir carrito
+// Abrir/cerrar carrito
 cartIcon.addEventListener("click", (e) => {
   e.stopPropagation();
-  cartModal.style.display = "block";
+
+  cartModal.style.display =
+    cartModal.style.display === "block" ? "none" : "block";
 });
 
 // Eliminar producto del carrito
@@ -109,7 +111,7 @@ clearCartBtn.addEventListener("click", () => {
   renderCart();
 });
 
-
+// Aplicar filtros
 document.getElementById("apply-filters").addEventListener("click", () => {
   const category = document.getElementById("category").value;
   const minPrice = parseFloat(document.getElementById("min-price").value) || 0;
@@ -122,4 +124,13 @@ document.getElementById("apply-filters").addEventListener("click", () => {
   );
 
   renderProducts(filtered);
+});
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener("click", (e) => {
+  if (cartModal.style.display === "block") {
+    if (!cartModal.contains(e.target) && !cartIcon.contains(e.target)) {
+      cartModal.style.display = "none";
+    }
+  }
 });
