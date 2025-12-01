@@ -50,20 +50,25 @@ function renderProducts(list) {
 function renderCart() {
   cartItemsContainer.innerHTML = "";
   let total = 0;
+
   cart.forEach(item => {
     const prod = products.find(p => p._id === item.id);
     if (!prod) return;
+
     total += prod.price * item.quantity;
+
     const div = document.createElement("div");
     div.className = "cart-item";
     div.innerHTML = `
-      ${prod.name} x${item.quantity} - €${(prod.price*item.quantity).toFixed(2)}
+      ${prod.name} x${item.quantity} - €${(prod.price * item.quantity).toFixed(2)}
       <button data-id="${item.id}">X</button>
     `;
     cartItemsContainer.appendChild(div);
   });
+
   cartTotalElem.textContent = `Total: €${total.toFixed(2)}`;
-  cartCount.textContent = cart.reduce((sum,i)=>sum+i.quantity,0);
+  cartCount.textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
@@ -72,25 +77,28 @@ fetchProducts();
 
 // Añadir producto al carrito
 productsContainer.addEventListener("click", e => {
-  if(e.target.tagName==="BUTTON"){
+  if (e.target.tagName === "BUTTON") {
     const id = e.target.dataset.id;
-    const existing = cart.find(i=>i.id===id);
-    if(existing) existing.quantity++;
-    else cart.push({id, quantity:1});
+
+    const existing = cart.find(i => i.id === id);
+    if (existing) existing.quantity++;
+    else cart.push({ id, quantity: 1 });
+
     renderCart();
   }
 });
 
-// Mostrar/ocultar carrito
-cartIcon.addEventListener("click", () => {
-  cartModal.style.display = cartModal.style.display === "block" ? "none" : "block";
+// Abrir carrito
+cartIcon.addEventListener("click", (e) => {
+  e.stopPropagation();
+  cartModal.style.display = "block";
 });
 
 // Eliminar producto del carrito
 cartItemsContainer.addEventListener("click", e => {
-  if(e.target.tagName==="BUTTON"){
+  if (e.target.tagName === "BUTTON") {
     const id = e.target.dataset.id;
-    cart = cart.filter(i=>i.id!==id);
+    cart = cart.filter(i => i.id !== id);
     renderCart();
   }
 });
@@ -101,10 +109,29 @@ clearCartBtn.addEventListener("click", () => {
   renderCart();
 });
 
-// Filtros
+// ===============================
+// FILTROS – MIN + MAX PRICE AÑADIDOS
+// ===============================
 document.getElementById("apply-filters").addEventListener("click", () => {
   const category = document.getElementById("category").value;
-  const maxPrice = parseFloat(document.getElementById("price").value) || Infinity;
-  const filtered = products.filter(p => (category === "" || p.category === category) && p.price <= maxPrice);
+  const minPrice = parseFloat(document.getElementById("min-price").value) || 0;
+  const maxPrice = parseFloat(document.getElementById("max-price").value) || Infinity;
+
+  const filtered = products.filter(p =>
+    (category === "" || p.category === category) &&
+    p.price >= minPrice &&
+    p.price <= maxPrice
+  );
+
   renderProducts(filtered);
+});
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener("click", (e) => {
+  const clickedInsideCart = cartModal.contains(e.target);
+  const clickedCartIcon = cartIcon.contains(e.target);
+
+  if (cartModal.style.display === "block" && !clickedInsideCart && !clickedCartIcon) {
+    cartModal.style.display = "none";
+  }
 });
