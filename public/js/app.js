@@ -109,9 +109,7 @@ clearCartBtn.addEventListener("click", () => {
   renderCart();
 });
 
-// ===============================
-// FILTROS – MIN + MAX PRICE AÑADIDOS
-// ===============================
+
 document.getElementById("apply-filters").addEventListener("click", () => {
   const category = document.getElementById("category").value;
   const minPrice = parseFloat(document.getElementById("min-price").value) || 0;
