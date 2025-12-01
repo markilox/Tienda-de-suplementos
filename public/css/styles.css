@@ -1,0 +1,125 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: rgb(18, 26, 45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+}
+
+.titulo h1 {
+  font-size: 38px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: rgb(0, 255, 133);
+  text-shadow: 0 0 10px rgb(0, 255, 133, 0.5);
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 25px auto;
+  filter: drop-shadow(0 0 5px rgb(0, 255, 133, 0.4));
+}
+
+.formulario {
+  background: rgb(255, 255, 255, 0.05);
+  padding: 35px;
+  width: 340px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 15px rgb(0, 255, 133, 0.2);
+  border: 1px solid rgb(0, 255, 133, 0.2);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.formulario h2 {
+  margin-bottom: 18px;
+  font-size: 26px;
+  color: rgb(0, 255, 133);
+  text-shadow: 0 0 5px rgb(0, 255, 140, 0.4);
+}
+
+.formulario label {
+  display: block;
+  text-align: left;
+  margin: 10px 0 5px 2px;
+  font-weight: 600;
+}
+
+.formulario input[type="text"],
+.formulario input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgb(255, 255, 255, 0.15);
+  border: none;
+  outline: none;
+  margin-bottom: 15px;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  transition: 0.3s ease;
+}
+
+.formulario input[type="text"]:focus,
+.formulario input[type="password"]:focus {
+  background: rgb(255, 255, 255, 0.22);
+  box-shadow: 0 0 8px rgb(0, 255, 133);
+}
+
+.formulario input[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgb(0, 255, 133);
+  color: rgb(11, 15, 22);
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: bold;
+  transition: all 0.25s ease;
+}
+
+.formulario input[type="submit"]:hover {
+  background: rgb(10, 255, 149);
+  box-shadow: 0 0 12px rgb(0, 255, 133, 0.7);
+}
+
+a {
+    color: rgb(0, 255, 133);
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 15px;
+    transition: 0.3s ease;
+    text-shadow: 0 0 8px rgb(0, 255, 133, 0.4);
+}
+
+a:hover {
+    color: rgb(0, 201, 106);
+    text-shadow: 0 0 12px rgb(0, 255, 133, 0.8);
+    transform: scale(1.05);
+}
+
+a:active {
+    color: rgb(0, 158, 82);
+    text-shadow: 0 0 5px rgb(0, 255, 133, 0.6);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
