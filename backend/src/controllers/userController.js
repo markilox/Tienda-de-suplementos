@@ -101,6 +101,7 @@ exports.register = async (req, res) => {
 // Se hace login
 
 exports.login = async (req, res) => {
+  console.log(" Datos recibidos en /login:", req.body) 
   try {
     const email = xss(req.body.email);
     const password = req.body.password;

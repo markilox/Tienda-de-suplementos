@@ -15,16 +15,21 @@
 
   <div class="formulario">
     <h2>Log-In</h2>
-    <form action="/login" method="post">
-        <label for="name">Nombre de Usuario:</label> <br>
-        <input type="text" name="name" required> <br>
-        <label for="password">Contraseña del Usuario:</label> <br>
-        <input type="password" name="password" required> <br>
-        <input type="submit" value="Enviar">
+    <form id="login-form">
+    <label for="email">Correo Electrónico:</label> <br>
+    <input type="email" name="email" required> <br>
+
+    <label for="password">Contraseña:</label> <br>
+    <input type="password" name="password" required> <br>
+
+    <input type="submit" value="Enviar">
+
+    <p id="login-error" style="color:red; display:none;"></p>
     </form>
     
     <a href="register.html">¿aun no tienes cuenta?</a>
   </div>
 
+  <script src="/js/login.js"></script>
 </body>
 </html>
