@@ -134,3 +134,7 @@ document.addEventListener("click", (e) => {
     }
   }
 });
+
+checkoutBtn.addEventListener("click", () => {
+  window.location.href = "/login.html";
+});
