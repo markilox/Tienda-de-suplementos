@@ -2,18 +2,50 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Tienda de Suplementos</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title>Mi Tienda - Productos</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <h1>Tienda de Suplementos</h1>
+<header>
+  <h1>Mi Tienda</h1>
+  <div class="cart" id="cart-icon">
+    <img src="" alt="Carrito">
+    <div class="cart-count" id="cart-count">0</div>
+  </div>
+</header>
 
-  <nav>
-    <a href="/productos.html">Productos</a>
-    <a href="/login.html">Login</a>
-    <a href="/register.html">Registro</a>
-  </nav>
+<!-- Filtros -->
+<div class="filters">
+  <div>
+    <label for="category">Categoría:</label>
+    <select id="category">
+      <option value="">Todas</option>
+      <option value="suplementos">Suplementos</option>
+      <option value="ropa">Ropa</option>
+    </select>
+  </div>
+  <div>
+    <label for="price">Precio máximo:</label>
+    <input type="number" id="price" placeholder="€">
+  </div>
+  <div>
+    <button id="apply-filters">Filtrar</button>
+  </div>
+</div>
 
+<!-- Grid de productos -->
+<div class="products grid-5fr" id="products-container"></div>
+
+<!-- Modal carrito -->
+<div class="cart-modal" id="cart-modal">
+  <h3>Carrito</h3>
+  <div id="cart-items"></div>
+  <div class="cart-total" id="cart-total">Total: €0.00</div>
+  <button id="clear-cart">Vaciar carrito</button>
+  <button id="checkout-cart">Realizar compra</button>
+</div>
+
+<script src="js/app.js" defer></script>
 </body>
 </html>
