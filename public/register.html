@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <div class="titulo">
+    <h1>Tienda de Suplementos</h1>
+  </div>
+
+  <img src="img/logo.png" width="20%" alt="Logo" class="logo">
+
+  <div class="formulario">
+    <h2>Registro</h2>
+
+    <form action="" method="post" id="register">
+      <label for="name">Nombre de Usuario:</label> <br>
+      <input type="text" name="name" required> <br>
+      <label for="password">Nuenva Contraseña:</label> <br>
+      <input type="password" name="password" id="pass1" required> <br>
+      <label for="password">Confirmación de Contraseña:</label> <br>
+      <input type="password" name="password2" id="pass2" required> <br>
+      <input type="submit" value="Enviar">
+      <p id="error" style="color:red; display:none;">Las contraseñas no coinciden</p>
+    </form>
+
+    <a href="login.html">¿ya tienes cuenta?</a>
+  </div>
+
+  <script src="/js/validate.js"></script>
+
+</body>
+</html>
