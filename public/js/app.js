@@ -108,3 +108,7 @@ document.getElementById("apply-filters").addEventListener("click", () => {
   const filtered = products.filter(p => (category === "" || p.category === category) && p.price <= maxPrice);
   renderProducts(filtered);
 });
+
+checkoutBtn.addEventListener("click", () => {
+  window.location.href = "/login.html"; 
+});
