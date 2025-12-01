@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const xss = require("xss");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -32,16 +33,28 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    const cleanData = {};
+
+    if (req.body.name) cleanData.name = xss(req.body.name);
+    if (req.body.email) cleanData.email = xss(req.body.email);
+
+    // Evitar que un usuario cambie su propio role o contraseña desde esta ruta
+    delete req.body.password;
+    delete req.body.role;
+
     const updated = await User.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      cleanData,
       { new: true }
     );
+
     res.json(updated);
+
   } catch (error) {
     res.status(400).json({ message: "Error actualizando usuario" });
   }
 };
+
 
 exports.deleteUser = async (req, res) => {
   try {
@@ -58,7 +71,9 @@ exports.deleteUser = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const name = xss(req.body.name);
+    const email = xss(req.body.email);
+    const password = req.body.password; // NO sanitizar la contraseña
 
     const exists = await User.findOne({ email });
     if (exists) {
@@ -75,23 +90,30 @@ exports.register = async (req, res) => {
     });
 
     res.status(201).json({ message: "Usuario registrado", user });
+
   } catch (error) {
     res.status(500).json({ message: "Error registrando usuario" });
   }
 };
 
 
+
 // Se hace login
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = xss(req.body.email);
+    const password = req.body.password;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Credenciales incorrectas" });
+    if (!user) {
+      return res.status(400).json({ message: "Credenciales incorrectas" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Credenciales incorrectas" });
+    if (!isMatch) {
+      return res.status(400).json({ message: "Credenciales incorrectas" });
+    }
 
     const token = jwt.sign(
       { id: user._id, email: user.email },
@@ -100,10 +122,12 @@ exports.login = async (req, res) => {
     );
 
     res.json({ message: "Login exitoso", token });
+
   } catch (error) {
     res.status(500).json({ message: "Error durante el login" });
   }
 };
+
 
 
 // Se obtiene perfil del usuario (requiere token)
