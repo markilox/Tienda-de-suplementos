@@ -3,9 +3,9 @@ openapi: 3.0.1
 info:
   title: API Tienda de Suplementos
   description: >
-    API RESTful para la gestión de usuarios y productos en una tienda online de suplementos.
-    Incluye autenticación con JWT, sanitización XSS y operaciones CRUD.
-  version: "1.0.0"
+    API RESTful para la gestión de usuarios, productos, carrito y checkout en una tienda online de suplementos.
+    Incluye autenticación con JWT, sanitización XSS, operaciones CRUD y gestión de carrito temporal.
+  version: "2.0.0"
 
 servers:
   - url: http://localhost:3000
@@ -26,8 +26,12 @@ paths:
       responses:
         "201":
           description: Usuario registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
         "400":
-          description: Email ya registrado
+          description: Email ya registrado o datos inválidos
 
   /api/users/login:
     post:
@@ -42,6 +46,10 @@ paths:
       responses:
         "200":
           description: Login correcto + token JWT
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
         "400":
           description: Credenciales incorrectas
 
@@ -54,6 +62,10 @@ paths:
       responses:
         "200":
           description: Perfil del usuario
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
         "401":
           description: Token inválido o no enviado
 
@@ -67,9 +79,14 @@ paths:
           required: true
           schema:
             type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       responses:
         "200":
           description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
         "404":
           description: Usuario no encontrado
 
@@ -82,6 +99,7 @@ paths:
           required: true
           schema:
             type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       requestBody:
         required: true
         content:
@@ -91,6 +109,10 @@ paths:
       responses:
         "200":
           description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
         "400":
           description: Error actualizando usuario
 
@@ -101,9 +123,14 @@ paths:
         - in: path
           name: id
           required: true
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       responses:
         "200":
           description: Usuario eliminado
+        "401":
+          description: No autorizado
 
   /api/products:
     get:
@@ -112,6 +139,12 @@ paths:
       responses:
         "200":
           description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
     post:
       summary: Crear producto
       tags: [Productos]
@@ -120,10 +153,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Product"
+              $ref: "#/components/schemas/ProductCreate"
       responses:
         "201":
           description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
 
   /api/products/{id}:
     get:
@@ -133,11 +170,18 @@ paths:
         - in: path
           name: id
           required: true
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       responses:
         "200":
           description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
         "404":
-          description: No encontrado
+          description: Producto no encontrado
 
     put:
       summary: Actualizar producto
@@ -146,15 +190,22 @@ paths:
         - in: path
           name: id
           required: true
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Product"
+              $ref: "#/components/schemas/ProductUpdate"
       responses:
         "200":
           description: Producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
 
     delete:
       summary: Eliminar producto
@@ -163,9 +214,141 @@ paths:
         - in: path
           name: id
           required: true
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
       responses:
         "200":
           description: Producto eliminado
+        "401":
+          description: No autorizado
+
+  /api/cart:
+    get:
+      summary: Obtener carrito del usuario autenticado
+      tags: [Carrito]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Carrito obtenido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "401":
+          description: No autenticado
+
+  /api/cart/add:
+    post:
+      summary: Añadir producto al carrito
+      tags: [Carrito]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartAddItem"
+      responses:
+        "200":
+          description: Producto añadido al carrito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "400":
+          description: Producto no encontrado o datos inválidos
+        "401":
+          description: No autenticado
+
+  /api/cart/update:
+    put:
+      summary: Actualizar cantidad de producto en carrito
+      tags: [Carrito]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartUpdateItem"
+      responses:
+        "200":
+          description: Cantidad actualizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "404":
+          description: Producto no encontrado en carrito
+        "401":
+          description: No autenticado
+
+  /api/cart/remove/{productId}:
+    delete:
+      summary: Eliminar producto del carrito
+      tags: [Carrito]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+            pattern: "^[0-9a-fA-F]{24}$"
+      responses:
+        "200":
+          description: Producto eliminado del carrito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+        "401":
+          description: No autenticado
+
+  /api/cart/clear:
+    delete:
+      summary: Vaciar carrito completamente
+      tags: [Carrito]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Carrito vaciado
+        "401":
+          description: No autenticado
+
+  /api/checkout:
+    post:
+      summary: Realizar checkout/procesar pedido
+      tags: [Checkout]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutRequest"
+      responses:
+        "201":
+          description: Pedido realizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutResponse"
+        "400":
+          description: Carrito vacío, stock insuficiente u otros errores
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: No autenticado
 
 components:
 
@@ -183,10 +366,18 @@ components:
       properties:
         name:
           type: string
+          example: "Juan Pérez"
+          minLength: 2
+          maxLength: 50
         email:
           type: string
+          format: email
+          example: "juan@email.com"
         password:
           type: string
+          format: password
+          minLength: 6
+          example: "password123"
 
     UserLogin:
       type: object
@@ -194,30 +385,276 @@ components:
       properties:
         email:
           type: string
+          format: email
+          example: "juan@email.com"
         password:
           type: string
+          format: password
+          example: "password123"
 
     UserUpdate:
       type: object
       properties:
         name:
           type: string
+          example: "Juan Pérez Actualizado"
+          minLength: 2
+          maxLength: 50
         email:
           type: string
+          format: email
+          example: "juan.nuevo@email.com"
+
+    UserProfile:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        name:
+          type: string
+          example: "Juan Pérez"
+        email:
+          type: string
+          example: "juan@email.com"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    AuthResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Login exitoso"
+        token:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        user:
+          $ref: "#/components/schemas/UserProfile"
 
     Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439012"
+        name:
+          type: string
+          example: "Proteína Whey"
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 29.99
+        description:
+          type: string
+          example: "Suplemento de proteína de suero de leche"
+        category:
+          type: string
+          example: "suplementos"
+        stock:
+          type: integer
+          minimum: 0
+          example: 50
+        image:
+          type: string
+          example: "https://ejemplo.com/imagen.jpg"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ProductCreate:
       type: object
       required: [name, price, category]
       properties:
         name:
           type: string
+          example: "Proteína Whey"
         price:
           type: number
+          format: float
+          minimum: 0
+          example: 29.99
         description:
           type: string
+          example: "Suplemento de proteína de suero de leche"
         category:
           type: string
+          example: "suplementos"
         stock:
-          type: number
+          type: integer
+          minimum: 0
+          default: 0
+          example: 50
         image:
           type: string
+          example: "https://ejemplo.com/imagen.jpg"
+
+    ProductUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Proteína Whey Actualizada"
+        price:
+          type: number
+          format: float
+          minimum: 0
+          example: 34.99
+        description:
+          type: string
+          example: "Descripción actualizada"
+        category:
+          type: string
+          example: "suplementos"
+        stock:
+          type: integer
+          minimum: 0
+          example: 45
+        image:
+          type: string
+          example: "https://ejemplo.com/nueva-imagen.jpg"
+
+    CartItem:
+      type: object
+      required: [product, quantity]
+      properties:
+        product:
+          $ref: "#/components/schemas/Product"
+        quantity:
+          type: integer
+          minimum: 1
+          example: 2
+
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "507f1f77bcf86cd799439013"
+        userId:
+          type: string
+          example: "507f1f77bcf86cd799439011"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CartAddItem:
+      type: object
+      required: [productId, quantity]
+      properties:
+        productId:
+          type: string
+          pattern: "^[0-9a-fA-F]{24}$"
+          example: "507f1f77bcf86cd799439012"
+        quantity:
+          type: integer
+          minimum: 1
+          default: 1
+          example: 2
+
+    CartUpdateItem:
+      type: object
+      required: [productId, quantity]
+      properties:
+        productId:
+          type: string
+          pattern: "^[0-9a-fA-F]{24}$"
+          example: "507f1f77bcf86cd799439012"
+        quantity:
+          type: integer
+          minimum: 1
+          example: 3
+
+    CheckoutRequest:
+      type: object
+      required: [cart]
+      properties:
+        cart:
+          type: array
+          items:
+            type: object
+            required: [id, quantity]
+            properties:
+              id:
+                type: string
+                pattern: "^[0-9a-fA-F]{24}$"
+                example: "507f1f77bcf86cd799439012"
+              quantity:
+                type: integer
+                minimum: 1
+                example: 2
+
+    CheckoutResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Pedido realizado con éxito"
+        order:
+          type: object
+          properties:
+            _id:
+              type: string
+              example: "507f1f77bcf86cd799439014"
+            user:
+              type: string
+              example: "507f1f77bcf86cd799439011"
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  product:
+                    type: string
+                    example: "507f1f77bcf86cd799439012"
+                  quantity:
+                    type: integer
+                    example: 2
+            total:
+              type: number
+              example: 59.98
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Error específico"
+        insufficientStock:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: "507f1f77bcf86cd799439012"
+              name:
+                type: string
+                example: "Proteína Whey"
+              available:
+                type: integer
+                example: 5
+              requested:
+                type: integer
+                example: 10
