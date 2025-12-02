@@ -30,6 +30,7 @@
     "mongoose": "^9.0.0",
     "swagger-ui-express": "^5.0.1",
     "xss": "^1.0.15",
+    "yaml": "^2.8.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
