@@ -4,8 +4,8 @@ const Cart = require("../models/cartModel");
 
 exports.checkout = async (req, res) => {
   try {
-    const userId = req.user.id; // viene del middleware auth
-    const cart = req.body.cart; // [{id, quantity}]
+    const userId = req.user.id;
+    const cart = req.body.cart;
 
     if (!cart || cart.length === 0) {
       return res.status(400).json({ message: "No hay productos en el carrito" });
@@ -15,7 +15,6 @@ exports.checkout = async (req, res) => {
     let validatedItems = [];
     let insufficientStock = [];
 
-    // Validar stock de cada producto
     for (const item of cart) {
       const product = await Product.findById(item.id);
       if (!product) {
@@ -35,7 +34,6 @@ exports.checkout = async (req, res) => {
       total += product.price * item.quantity;
     }
 
-    // Si hay productos con stock insuficiente, devolvemos error
     if (insufficientStock.length > 0) {
       return res.status(400).json({
         message: "No hay suficiente stock para algunos productos",
@@ -43,13 +41,11 @@ exports.checkout = async (req, res) => {
       });
     }
 
-    // Descontar stock
     for (const item of validatedItems) {
       item.product.stock -= item.quantity;
       await item.product.save();
     }
 
-    // Crear pedido en base de datos
     const order = await Order.create({
       user: userId,
       items: validatedItems.map(i => ({
@@ -59,7 +55,11 @@ exports.checkout = async (req, res) => {
       total
     });
 
-    await Cart.findOneAndDelete({ user: userId });
+    const carritoExistente = await Cart.findOne({ userId: userId });
+    
+    if (carritoExistente) {
+      await Cart.findOneAndDelete({ userId: userId });
+    }
 
     res.status(201).json({
       message: "Pedido realizado con éxito",
@@ -67,7 +67,7 @@ exports.checkout = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Checkout error:", error);
+    console.error("CHECKOUT ERROR:", error);
     res.status(500).json({ message: "Error procesando el pedido" });
   }
 };
