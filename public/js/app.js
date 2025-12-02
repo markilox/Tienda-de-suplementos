@@ -70,7 +70,7 @@ function renderProducts(list) {
     card.style.position = "relative";
     
     card.innerHTML = `
-      <img src="${p.image || 'https://via.placeholder.com/300x300?text=Sin+img'}" alt="${p.name}">
+      <img src="../img/${p.image}" alt="${p.image}" onerror="this.src='https://via.placeholder.com/300x300?text=Sin+img'}">
       <h3>${p.name}</h3>
       <p class="price">€${p.price?.toFixed(2) || '0.00'}</p>
       <p class="stock">Stock: ${p.stock || 0}</p>
