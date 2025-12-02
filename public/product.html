@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Nutramax</title>
+  <title>Producto - Nutramax</title>
   <link rel="stylesheet" href="/css/stylesIndex.css">
   <link rel="stylesheet" href="/css/stylesProduct.css">
 </head>
@@ -25,7 +25,12 @@
     </div>
 
     <div class="product-detail">
-      <div class="product-gallery" id="product-gallery">
+      <div class="product-image-container">
+        <img id="product-image" 
+             src="" 
+             alt="Producto"
+             class="product-main-image"
+        >
       </div>
 
       <div class="product-info">
@@ -55,23 +60,7 @@
           <button class="btn-add-to-cart" id="add-to-cart-btn">
             Añadir al carrito
           </button>
-          <button class="btn-buy-now" id="buy-now-btn">
-            Comprar ahora
-          </button>
         </div>
-      </div>
-    </div>
-
-    <div class="product-tabs">
-      <button class="tab-btn active" data-tab="description">Descripción</button>
-      <button class="tab-btn" data-tab="ingredients">Ingredientes</button>
-      
-      <div class="tab-content active" id="tab-description">
-        <p id="full-description">Cargando...</p>
-      </div>
-      <div class="tab-content" id="tab-ingredients">
-        <ul id="ingredients-list">
-        </ul>
       </div>
     </div>
   </main>
