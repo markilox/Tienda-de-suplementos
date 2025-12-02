@@ -103,7 +103,7 @@ function renderProduct(product) {
   const stockElem = document.getElementById("product-stock");
   stockElem.textContent = `Stock: ${product.stock || 0}`;
   if ((product.stock || 0) <= 0) {
-    stockElem.style.color = "#ff6b6b";
+    stockElem.style.color = "rgba(255, 107, 107, 1)";
   }
   
   const description = product.description || "Sin descripción disponible";

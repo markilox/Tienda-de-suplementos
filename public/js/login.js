@@ -26,7 +26,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     // Guardar token
     localStorage.setItem("token", data.token);
 
-    // ✅ NUEVO: Recuperar carrito pendiente si existe
+    // Recuperar carrito pendiente si existe
     const pendingCart = JSON.parse(localStorage.getItem("pendingCart")) || [];
     const localCart = JSON.parse(localStorage.getItem("cart")) || [];
     
@@ -34,7 +34,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const cartToSync = pendingCart.length > 0 ? pendingCart : localCart;
 
     if (cartToSync.length > 0) {
-      // COPIAR carrito local al backend
+      // Copiar carrito local al backend
       for (const item of cartToSync) {
         await fetch("/api/cart/add", {
           method: "POST",

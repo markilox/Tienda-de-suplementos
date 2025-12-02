@@ -1,5 +1,3 @@
-/* stylesProduct.css - CON LÍMITES DE TAMAÑO PARA IMÁGENES */
-
 /* 1. Header */
 header h1 {
   color: rgb(0, 255, 133) !important;
@@ -47,7 +45,7 @@ header a {
   margin-bottom: 40px;
 }
 
-/* 5. Contenedor de imagen - NUEVO */
+/* 5. Contenedor de imagen */
 .product-image-container {
   display: flex;
   justify-content: center;
@@ -60,13 +58,13 @@ header a {
   max-height: 500px;
 }
 
-/* 6. Imagen del producto - TAMAÑOS LIMITADOS */
+/* 6. Imagen del producto */
 .product-main-image {
   width: 100%;
   max-width: 100%;
   height: auto;
-  max-height: 400px; /* ⭐ LÍMITE DE ALTURA */
-  object-fit: contain; /* Muestra imagen completa */
+  max-height: 400px;
+  object-fit: contain;
   border-radius: 8px;
   transition: transform 0.3s ease;
 }
