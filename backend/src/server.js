@@ -12,6 +12,7 @@ const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const checkoutRoutes = require("./routes/checkoutRoutes");
+const cleanOldCart  = require("./middlewares/cartCleanup");
 
 const swaggerDocument = yaml.load(path.join(__dirname, "openapi.yaml"));
 connectDB();
@@ -32,7 +33,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/checkout", checkoutRoutes);
 
-// Archivos estáticos
 app.use(express.static("public"));
 
 const PORT = process.env.PORT;
