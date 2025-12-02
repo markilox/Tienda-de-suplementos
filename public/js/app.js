@@ -35,7 +35,7 @@ function renderProducts(list) {
     const card = document.createElement("div");
     card.className = "product-card";
     card.innerHTML = `
-      <img src="${p.image || 'https://via.placeholder.com/300x300?text=Sin+imagen'}" alt="${p.name}">
+      <img src="${p.image || 'https://via.placeholder.com/300x300?text=Sin+img'}" alt="${p.name}">
       <h3>${p.name}</h3>
       <p class="description">${p.description}</p>
       <p class="price">€${p.price.toFixed(2)}</p>
