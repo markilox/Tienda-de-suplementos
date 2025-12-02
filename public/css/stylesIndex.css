@@ -129,27 +129,28 @@ button {
   z-index: 1000;
   box-shadow: 0 4px 8px rgb(0, 255, 133, 0.8);
   padding: 15px;
+  
+  color: rgb(34, 34, 34);
 }
 
 .cart-item { 
   display: flex; 
   justify-content: 
   space-between; 
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
+  color: rgb(34, 34, 34);
 }
 
 .cart-item button {
   padding: 2px 6px; 
   border-radius: 3px; 
 }
-.cart-item button:hover{
-  background: rgb(33, 136, 56);
-}
 
 .cart-total { 
   font-weight: bold; 
   margin-top: 10px; 
-  text-align: right; 
+  text-align: right;
+  color: rgb(34, 34, 34);
 }
 
 #clear-cart, #checkout-cart {
