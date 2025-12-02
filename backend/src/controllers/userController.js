@@ -21,7 +21,7 @@ exports.getUserById = async (req, res) => {
       return res.status(400).json({ message: "ID no válido" });
     }
 
-    // Buscar usuario y NO devolver contraseña
+    // Buscar usuario y no devolver contraseña
     const user = await User.findById(req.params.id).select("-password");
     res.json(user);
 
@@ -38,7 +38,7 @@ exports.updateUser = async (req, res) => {
     if (req.body.name) cleanData.name = xss(req.body.name);
     if (req.body.email) cleanData.email = xss(req.body.email);
 
-    // Evitar que un usuario cambie su propio role o contraseña desde esta ruta
+    // Evitar que un usuario cambie su propio rol o contraseña desde esta ruta
     delete req.body.password;
     delete req.body.role;
 
@@ -68,12 +68,11 @@ exports.deleteUser = async (req, res) => {
 
 
 // Se realiza el registro
-
 exports.register = async (req, res) => {
   try {
     const name = xss(req.body.name);
     const email = xss(req.body.email);
-    const password = req.body.password; // NO sanitizar la contraseña
+    const password = req.body.password; // No sanitizar la contraseña
 
     const exists = await User.findOne({ email });
     if (exists) {
@@ -99,7 +98,6 @@ exports.register = async (req, res) => {
 
 
 // Se hace login
-
 exports.login = async (req, res) => {
   console.log(" Datos recibidos en /login:", req.body) 
   try {
