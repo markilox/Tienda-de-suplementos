@@ -1,5 +1,6 @@
 const Product = require("../models/productModel");
-const Order = require("../models/checkoutModel"); // tu modelo de pedidos
+const Order = require("../models/checkoutModel");
+const Cart = require("../models/cartModel");
 
 exports.checkout = async (req, res) => {
   try {
@@ -57,6 +58,8 @@ exports.checkout = async (req, res) => {
       })),
       total
     });
+
+    await Cart.findOneAndDelete({ user: userId });
 
     res.status(201).json({
       message: "Pedido realizado con éxito",

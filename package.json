@@ -28,7 +28,9 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^9.0.0",
-    "xss": "^1.0.15"
+    "swagger-ui-express": "^5.0.1",
+    "xss": "^1.0.15",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
