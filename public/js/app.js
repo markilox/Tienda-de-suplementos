@@ -62,35 +62,28 @@ async function fetchProducts() {
 
 // Render productos
 function renderProducts(list) {
-  if (!productsContainer) {
-    console.error("No se encontró products-container");
-    return;
-  }
-  
   productsContainer.innerHTML = "";
-  
-  if (list.length === 0) {
-    productsContainer.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
-        <h3>No hay productos disponibles</h3>
-      </div>
-    `;
-    return;
-  }
-  
   list.forEach(p => {
     const card = document.createElement("div");
     card.className = "product-card";
+    card.style.cursor = "pointer";
+    card.style.position = "relative";
+    
     card.innerHTML = `
       <img src="${p.image || 'https://via.placeholder.com/300x300?text=Sin+img'}" alt="${p.name}">
       <h3>${p.name}</h3>
-      <p class="description">${p.description || 'Sin descripción'}</p>
       <p class="price">€${p.price?.toFixed(2) || '0.00'}</p>
       <p class="stock">Stock: ${p.stock || 0}</p>
       <button data-id="${p._id}" ${(p.stock || 0) <= 0 ? 'disabled style="opacity:0.5"' : ''}>
         ${(p.stock || 0) <= 0 ? 'Sin stock' : 'Añadir al carrito'}
       </button>
     `;
+    card.addEventListener("click", (e) => {
+      if (e.target.tagName !== 'BUTTON') {
+        window.location.href = `/product.html?id=${p._id}`;
+      }
+    });
+    
     productsContainer.appendChild(card);
   });
 }
