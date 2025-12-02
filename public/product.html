@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Producto - Tienda de Suplementos</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/product-detail.css">
+</head>
+<body>
+  <header>
+    <a href="/index.html" style="text-decoration: none; color: white;">
+      <h1>Tienda de Suplementos</h1>
+    </a>
+    <div class="cart" id="cart-icon">
+      <img src="img/cart.png" alt="Carrito">
+      <div class="cart-count" id="cart-count">0</div>
+    </div>
+  </header>
+
+  <main class="product-detail-container">
+    <div class="breadcrumb">
+      <a href="/index.html">Inicio</a> &gt; 
+      <a href="/index.html?category=" id="category-link">Categoría</a> &gt; 
+      <span id="product-name-breadcrumb">Producto</span>
+    </div>
+
+    <div class="product-detail">
+      <div class="product-gallery" id="product-gallery">
+      </div>
+
+      <div class="product-info">
+        <h1 id="product-title">Cargando...</h1>
+        <div class="product-meta">
+          <span class="sku" id="product-sku">SKU: --</span>
+          <span class="rating">★★★★☆ (45)</span>
+          <span class="stock" id="product-stock">Stock: --</span>
+        </div>
+
+        <div class="price-container">
+          <span class="price" id="product-price">€--.--</span>
+          <span class="old-price" id="product-old-price">€--.--</span>
+          <span class="discount" id="product-discount">-XX%</span>
+        </div>
+
+        <p class="description" id="product-description">
+          Cargando descripción...
+        </p>
+
+        <div class="flavor-selector">
+          <h3>Selecciona sabor:</h3>
+          <div class="flavor-options" id="flavor-options">
+          </div>
+        </div>
+
+        <div class="quantity-selector">
+          <h3>Cantidad:</h3>
+          <div class="quantity-controls">
+            <button class="qty-btn minus">-</button>
+            <input type="number" id="quantity" value="1" min="1" max="10">
+            <button class="qty-btn plus">+</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-add-to-cart" id="add-to-cart-btn">
+            Añadir al carrito
+          </button>
+          <button class="btn-buy-now" id="buy-now-btn">
+            Comprar ahora
+          </button>
+        </div>
+
+        <div class="additional-info">
+          <div class="info-item">
+            <span>Envío gratis desde €50</span>
+          </div>
+          <div class="info-item">
+            <span>Devolución en 30 días</span>
+          </div>
+          <div class="info-item">
+            <span>Garantía de calidad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-tabs">
+      <button class="tab-btn active" data-tab="description">Descripción</button>
+      <button class="tab-btn" data-tab="ingredients">Ingredientes</button>
+      <button class="tab-btn" data-tab="reviews">Opiniones</button>
+      
+      <div class="tab-content active" id="tab-description">
+        <p id="full-description">Cargando...</p>
+      </div>
+      <div class="tab-content" id="tab-ingredients">
+        <ul id="ingredients-list">
+        </ul>
+      </div>
+      <div class="tab-content" id="tab-reviews">
+        <div id="reviews-container">
+        </div>
+      </div>
+    </div>
+
+    <section class="related-products">
+      <h2>Productos relacionados</h2>
+      <div class="related-grid" id="related-products">
+      </div>
+    </section>
+  </main>
+
+  <div class="cart-modal" id="cart-modal">
+    <h3>Carrito</h3>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total">Total: €0.00</div>
+    <button id="clear-cart">Vaciar carrito</button>
+    <button id="checkout-cart">Realizar compra</button>
+  </div>
+
+  <script src="/js/header.js"></script>
+  <script src="/js/product-detail.js"></script>
+</body>
+</html>
