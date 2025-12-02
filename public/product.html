@@ -2,14 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Producto - Tienda de Suplementos</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/product-detail.css">
+  <title>Nutramax</title>
+  <link rel="stylesheet" href="/css/stylesIndex.css">
+  <link rel="stylesheet" href="/css/stylesProduct.css">
 </head>
 <body>
   <header>
-    <a href="/index.html" style="text-decoration: none; color: white;">
-      <h1>Tienda de Suplementos</h1>
+    <a href="/index.html" style="text-decoration: none;">
+      <h1>Nutramax</h1>
     </a>
     <div class="cart" id="cart-icon">
       <img src="img/cart.png" alt="Carrito">
@@ -31,26 +31,16 @@
       <div class="product-info">
         <h1 id="product-title">Cargando...</h1>
         <div class="product-meta">
-          <span class="sku" id="product-sku">SKU: --</span>
-          <span class="rating">★★★★☆ (45)</span>
           <span class="stock" id="product-stock">Stock: --</span>
         </div>
 
         <div class="price-container">
           <span class="price" id="product-price">€--.--</span>
-          <span class="old-price" id="product-old-price">€--.--</span>
-          <span class="discount" id="product-discount">-XX%</span>
         </div>
-
+        
         <p class="description" id="product-description">
           Cargando descripción...
         </p>
-
-        <div class="flavor-selector">
-          <h3>Selecciona sabor:</h3>
-          <div class="flavor-options" id="flavor-options">
-          </div>
-        </div>
 
         <div class="quantity-selector">
           <h3>Cantidad:</h3>
@@ -69,25 +59,12 @@
             Comprar ahora
           </button>
         </div>
-
-        <div class="additional-info">
-          <div class="info-item">
-            <span>Envío gratis desde €50</span>
-          </div>
-          <div class="info-item">
-            <span>Devolución en 30 días</span>
-          </div>
-          <div class="info-item">
-            <span>Garantía de calidad</span>
-          </div>
-        </div>
       </div>
     </div>
 
     <div class="product-tabs">
       <button class="tab-btn active" data-tab="description">Descripción</button>
       <button class="tab-btn" data-tab="ingredients">Ingredientes</button>
-      <button class="tab-btn" data-tab="reviews">Opiniones</button>
       
       <div class="tab-content active" id="tab-description">
         <p id="full-description">Cargando...</p>
@@ -96,17 +73,7 @@
         <ul id="ingredients-list">
         </ul>
       </div>
-      <div class="tab-content" id="tab-reviews">
-        <div id="reviews-container">
-        </div>
-      </div>
     </div>
-
-    <section class="related-products">
-      <h2>Productos relacionados</h2>
-      <div class="related-grid" id="related-products">
-      </div>
-    </section>
   </main>
 
   <div class="cart-modal" id="cart-modal">
@@ -118,6 +85,6 @@
   </div>
 
   <script src="/js/header.js"></script>
-  <script src="/js/product-detail.js"></script>
+  <script src="/js/product-details.js"></script>
 </body>
 </html>
