@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Producto - Nutramax</title>
+  <link rel="stylesheet" href="/css/stylesIndex.css">
+  <link rel="stylesheet" href="/css/stylesProduct.css">
+</head>
+<body>
+  <header>
+    <a href="/index.html" style="text-decoration: none;">
+      <h1>Nutramax</h1>
+    </a>
+    <div class="cart" id="cart-icon">
+      <img src="img/cart.png" alt="Carrito">
+      <div class="cart-count" id="cart-count">0</div>
+    </div>
+  </header>
+
+  <main class="product-detail-container">
+    <div class="breadcrumb">
+      <a href="/index.html">Inicio</a> &gt; 
+      <a href="/index.html?category=" id="category-link">Categoría</a> &gt; 
+      <span id="product-name-breadcrumb">Producto</span>
+    </div>
+
+    <div class="product-detail">
+      <div class="product-image-container">
+        <img id="product-image" 
+             src="" 
+             alt="Producto"
+             class="product-main-image"
+        >
+      </div>
+
+      <div class="product-info">
+        <h1 id="product-title">Cargando...</h1>
+        <div class="product-meta">
+          <span class="stock" id="product-stock">Stock: --</span>
+        </div>
+
+        <div class="price-container">
+          <span class="price" id="product-price">€--.--</span>
+        </div>
+        
+        <p class="description" id="product-description">
+          Cargando descripción...
+        </p>
+
+        <div class="quantity-selector">
+          <h3>Cantidad:</h3>
+          <div class="quantity-controls">
+            <button class="qty-btn minus">-</button>
+            <input type="number" id="quantity" value="1" min="1" max="10">
+            <button class="qty-btn plus">+</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn-add-to-cart" id="add-to-cart-btn">
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="cart-modal" id="cart-modal">
+    <h3>Carrito</h3>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total">Total: €0.00</div>
+    <button id="clear-cart">Vaciar carrito</button>
+    <button id="checkout-cart">Realizar compra</button>
+  </div>
+
+  <script src="/js/header.js"></script>
+  <script src="/js/product-details.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nutramax</title>
+  <link rel="stylesheet" href="/css/stylesIndex.css">
+</head>
+<body>
+
+<header>
+  <div class="titulo">
+    <h1>Nutramax</h1>
+  </div>
+  <div class="cart" id="cart-icon">
+    <img src="img/cart.png" alt="Carrito">
+    <div class="cart-count" id="cart-count">0</div>
+  </div>
+</header>
+
+<!-- Filtros -->
+<div class="filters">
+  <div>
+    <label for="category">Categoría:</label>
+    <select id="category">
+      <option value="">Todas</option>
+      <option value="creatinas">Creatinas</option>
+      <option value="proteinas">Proteínas</option>
+      <option value="suplementos">Suplementos</option>
+    </select>
+  </div>
+<div>
+  <label for="min-price">Precio mínimo:</label>
+  <input type="number" id="min-price" placeholder="€">
+</div>
+<div>
+  <label for="max-price">Precio máximo:</label>
+  <input type="number" id="max-price" placeholder="€">
+</div>
+
+  <div>
+    <button id="apply-filters">Filtrar</button>
+  </div>
+</div>
+
+<!-- Grid de productos -->
+<div class="products grid-5fr" id="products-container">
+</div>
+
+<!-- Modal carrito -->
+<div class="cart-modal" id="cart-modal">
+  <h3>Carrito</h3>
+  <div id="cart-items"></div>
+  <div class="cart-total" id="cart-total">Total: €0.00</div>
+  <button id="clear-cart">Vaciar carrito</button>
+  <button id="checkout-cart">Realizar compra</button>
+</div>
+
+<script src="js/app.js" defer></script>
+</body>
+</html>
