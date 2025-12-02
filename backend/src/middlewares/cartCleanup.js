@@ -9,7 +9,7 @@ exports.cleanOldCarts = async (req, res, next) => {
       });
       
       if (deleted.deletedCount > 0) {
-        console.log(`🧹 Limpieza automática: ${deleted.deletedCount} carritos antiguos borrados`);
+        console.log(`Limpieza automática: ${deleted.deletedCount} carritos antiguos borrados`);
       }
     }
     next();
