@@ -1,0 +1,223 @@
+openapi: 3.0.1
+
+info:
+  title: API Tienda de Suplementos
+  description: >
+    API RESTful para la gestión de usuarios y productos en una tienda online de suplementos.
+    Incluye autenticación con JWT, sanitización XSS y operaciones CRUD.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local de desarrollo
+
+paths:
+
+  /api/users/register:
+    post:
+      summary: Registro de usuario
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegister"
+      responses:
+        "201":
+          description: Usuario registrado correctamente
+        "400":
+          description: Email ya registrado
+
+  /api/users/login:
+    post:
+      summary: Login de usuario
+      tags: [Usuarios]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserLogin"
+      responses:
+        "200":
+          description: Login correcto + token JWT
+        "400":
+          description: Credenciales incorrectas
+
+  /api/users/profile:
+    get:
+      summary: Obtener perfil del usuario autenticado
+      tags: [Usuarios]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Perfil del usuario
+        "401":
+          description: Token inválido o no enviado
+
+  /api/users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario encontrado
+        "404":
+          description: Usuario no encontrado
+
+    put:
+      summary: Actualizar usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          description: Usuario actualizado
+        "400":
+          description: Error actualizando usuario
+
+    delete:
+      summary: Eliminar usuario
+      tags: [Usuarios]
+      parameters:
+        - in: path
+          name: id
+          required: true
+      responses:
+        "200":
+          description: Usuario eliminado
+
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      tags: [Productos]
+      responses:
+        "200":
+          description: Lista de productos
+    post:
+      summary: Crear producto
+      tags: [Productos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "201":
+          description: Producto creado
+
+  /api/products/{id}:
+    get:
+      summary: Obtener producto por ID
+      tags: [Productos]
+      parameters:
+        - in: path
+          name: id
+          required: true
+      responses:
+        "200":
+          description: Producto encontrado
+        "404":
+          description: No encontrado
+
+    put:
+      summary: Actualizar producto
+      tags: [Productos]
+      parameters:
+        - in: path
+          name: id
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Producto actualizado
+
+    delete:
+      summary: Eliminar producto
+      tags: [Productos]
+      parameters:
+        - in: path
+          name: id
+          required: true
+      responses:
+        "200":
+          description: Producto eliminado
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    UserRegister:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+    UserLogin:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+
+    Product:
+      type: object
+      required: [name, price, category]
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        category:
+          type: string
+        stock:
+          type: number
+        image:
+          type: string
