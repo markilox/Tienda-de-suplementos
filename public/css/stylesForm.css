@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 body {
@@ -111,7 +111,7 @@ a:hover {
 
 a:active {
     color: rgb(0, 158, 82);
-    text-shadow: 0 0 5px rgb(0, 255, 133, 0.6);
+    text-shadow: 0 0 5px rgb(0, 255, 133, 0.8);
 }
 
 @keyframes fadeIn {
